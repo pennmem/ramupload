@@ -37,7 +37,7 @@ def test_crawl_data_dir(datapath):
 def test_get_sessions(datapath):
     subject = random.choice(SUBJECTS)
     experiment = random.choice(EXPERIMENTS)
-    session = random.choice(list(range(10)))
+    session = random.choice(range(10))
     path = osp.join(datapath, experiment, subject,
                     "session_{:d}".format(session), "session.log")
     with open(path, 'w') as logfile:

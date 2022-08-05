@@ -1,4 +1,4 @@
-from __future__ import print_function
+
 
 import os
 import os.path as osp
@@ -20,7 +20,8 @@ logger = logging.getLogger(__name__)
 
 def _get_data_path(path=None):
     if path is None:
-        output = subprocess.check_output(shlex.split('git worktree list')).decode()
+        output = subprocess.check_output(
+            shlex.split('git worktree list')).decode()
         root = output.split()[0]
         found_path = osp.join(root, 'data')
     else:
@@ -88,7 +89,8 @@ def remove_transferred_eeg_data(path, lifetime):
         age = osp.getmtime()
         dt = datetime.now() - datetime.fromtimestamp(age)
         if dt.days > lifetime:
-            upload_log.info("Removing %s since it is %d days old", path_, dt.days)
+            upload_log.info(
+                "Removing %s since it is %d days old", path_, dt.days)
             shutil.rmtree(path_)
 
 

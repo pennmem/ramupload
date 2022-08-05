@@ -1,4 +1,4 @@
-from __future__ import unicode_literals, print_function
+
 
 import os
 import os.path as osp
@@ -14,7 +14,7 @@ from tempfile import mkdtemp
 from prompt_toolkit import prompt
 
 from . import upload_log
-from .core import copytree
+from ramupload.core import copytree
 
 logger = logging.getLogger(__name__)
 
@@ -58,11 +58,13 @@ class Uploader(object):
     :param str dataroot: Path to root data directory.
 
     """
+
     def __init__(self, subject, host_pc, transferred, remote, dataroot=None):
         self.subject = subject
 
         if dataroot is None:
-            self.dataroot = osp.abspath(osp.join(osp.dirname(__file__), '..', 'data'))
+            self.dataroot = osp.abspath(
+                osp.join(osp.dirname(__file__), '..', 'data'))
         else:
             self.dataroot = dataroot
 
@@ -100,9 +102,11 @@ class Uploader(object):
         if osp.exists(dest):  # local "upload"
             kwargs['local_dir'] = dest
             command = self.remote['rsync_local'].format(**kwargs)
+            # fill in command with kwargs like "My name is {fname}, I'm {age}".format(fname = "John", age = 36)
         else:  # Upload to ramtransfer
             command = self.remote['rsync_remote'].format(**kwargs)
         print(command)
+        print(shlex.split(command))
         return check_call(shlex.split(command))
 
     # FIXME: add default to dest
@@ -133,7 +137,8 @@ class Uploader(object):
     @contextmanager
     def _mount_host_pc(self, mount_point):
         """Mount the host PC for transferring data."""
-        addr_string = "//{user:s}:{password:s}@{addr:s}/{datadir:s}".format(**self.host_pc)
+        addr_string = "//{user:s}:{password:s}@{addr:s}/{datadir:s}".format(
+            **self.host_pc)
         try:
             print("Mounting host PC. This may take several seconds...")
             check_call(["mount_smbfs", addr_string, mount_point])
@@ -184,8 +189,10 @@ class Uploader(object):
 
         task_transfer_dir = osp.join(task_dir, 'host_pc')
         if osp.exists(task_transfer_dir):
-            print(task_transfer_dir, "already exists; not attempting to transfer data from the host PC")
-            print("If you want to re-transfer, please manually delete the host_pc directory")
+            print(task_transfer_dir,
+                  "already exists; not attempting to transfer data from the host PC")
+            print(
+                "If you want to re-transfer, please manually delete the host_pc directory")
             return True
 
         with tempdir() as mount_point:

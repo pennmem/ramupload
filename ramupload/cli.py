@@ -1,6 +1,5 @@
 """Command-line interface for uploading data."""
 
-from __future__ import unicode_literals, print_function
 
 import os
 import os.path as osp
@@ -13,8 +12,8 @@ from prompt_toolkit import prompt as ptkprompt
 from prompt_toolkit.token import Token
 from prompt_toolkit.contrib.completers import WordCompleter
 
-from .core import crawl_data_dir, get_sessions, check_internet_connection
-from .upload import Uploader
+from ramupload.core import crawl_data_dir, get_sessions, check_internet_connection
+from ramupload.upload import Uploader
 
 SUBCOMMANDS = ("host", "imaging", "clinical", "experiment")
 
@@ -31,7 +30,8 @@ def make_parser():
     parser = ArgumentParser(description="Upload RAM data", prog="ramup")
     parser.add_argument('--experiment', '-x', type=str, help="Experiment type")
     parser.add_argument('--session', '-n', type=int, help="Session number")
-    parser.add_argument('--dataroot', '-r', type=str, help="Root data directory")
+    parser.add_argument('--dataroot', '-r', type=str,
+                        help="Root data directory")
     parser.add_argument('--local-upload', '-l', action='store_true', default=False,
                         help='"Upload" files locally (for testing)')
     parser.add_argument('--ssh-key', '-k', type=str,
@@ -60,7 +60,7 @@ def prompt_subcommand():
         ("host", "Transfer EEG data from the host PC"),
         ("experiment", "Upload all experimental data")
     ])
-    completer = WordCompleter([value for _, value in mapped.items()])
+    completer = WordCompleter([value for _, value in list(mapped.items())])
     cmd = ''
     while cmd not in SUBCOMMANDS:
         res = prompt("Action: ", completer=completer)
@@ -125,8 +125,8 @@ def prompt_directory(initialdir=os.getcwd()):
         from tkinter import Tk
         from tkinter.filedialog import askdirectory
     except ImportError:
-        from Tkinter import Tk
-        from tkFileDialog import askdirectory
+        from tkinter import Tk
+        from tkinter.filedialog import askdirectory
     root = Tk()
     root.withdraw()
     path = askdirectory(initialdir=initialdir, title="Select directory")
@@ -174,7 +174,8 @@ def main():
             # Allow transferring data for AmplitudeDetermination experiments
             if 'AmplitudeDetermination' not in available[subject]:
                 available[subject].append('AmplitudeDetermination')
-            experiment = args.experiment or prompt_experiment(available[subject])
+            experiment = args.experiment or prompt_experiment(
+                available[subject])
 
             if args.session is None:
                 allow_any_session = experiment == 'AmplitudeDetermination'
