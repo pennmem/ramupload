@@ -105,8 +105,6 @@ class Uploader(object):
             # fill in command with kwargs like "My name is {fname}, I'm {age}".format(fname = "John", age = 36)
         else:  # Upload to ramtransfer
             command = self.remote['rsync_remote'].format(**kwargs)
-        print(command)
-        print(shlex.split(command))
         return check_call(shlex.split(command))
 
     # FIXME: add default to dest

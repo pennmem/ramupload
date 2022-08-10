@@ -65,3 +65,8 @@ target/
 
 # PyCharm files
 .idea/
+ramupload/upload.py.bak
+.gitignore
+ramupload/cli.py.bak
+maint/build.py.bak
+ramupload/core.py.bak
