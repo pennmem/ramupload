@@ -2,7 +2,7 @@ RAM upload tool
 ===============
 
 .. image:: https://img.shields.io/travis/pennmem/ramupload.svg
-   :target: https://travis-ci.org/pennmem/ramupload
+   :target: https://app.travis-ci.com/pennmem/ramupload.svg?branch=master
 
 .. image:: https://codecov.io/gh/pennmem/ramupload/branch/master/graph/badge.svg
    :target: https://codecov.io/gh/pennmem/ramupload
